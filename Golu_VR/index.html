@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navarathri SDG Temple Golu VR</title>
+  
+  <!-- A-Frame Library (v1.4.0) -->
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <!-- A-Frame Procedural Environment Component -->
+  <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+  
+  <!-- Custom Styles and Scripts -->
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/components/info-popup.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+
+  <!-- 2D Overlay for Desktop & Initial Load -->
+  <div id="ui-overlay">
+    <h1>🛕 Temple Courtyard SDG Golu</h1>
+    <p>Meta Quest: Open in Browser & tap <b>"Enter VR"</b> at the bottom right.<br>Point laser or gaze at stations to view SDG Goals!</p>
+  </div>
+
+  <a-scene embedded="false">
+    
+    <!-- Asset Management System -->
+    <a-assets timeout="10000">
+      <!-- 3D Models (Fallbacks created in scene if models are missing) -->
+      <a-asset-item id="pillar-model" src="assets/models/temple_pillar.glb"></a-asset-item>
+      <a-asset-item id="diya-model" src="assets/models/diya_lamp.glb"></a-asset-item>
+      <!-- Ambient Audio -->
+      <audio id="ambient-sound" src="assets/audio/temple_ambient.mp3" preload="auto" loop="true"></audio>
+    </a-assets>
+
+    <!-- 1. Environment: Night-Time Temple Courtyard -->
+    <a-entity environment="
+      preset: arches;
+      skyType: atmosphere;
+      skyColor: #02010a;
+      horizonColor: #1d0f36;
+      lightPosition: 0 0.1 -1;
+      lighting: distant;
+      ground: flat;
+      groundTexture: walkernoise;
+      groundColor: #2b1a10;
+      groundColor2: #1c0e08;
+      dressing: arches;
+      dressingAmount: 16;
+      dressingColor: #3d2618;
+      dressingScale: 6;
+      fog: 0.25;
+      playArea: 2;
+      stageSize: 150">
+    </a-entity>
+
+    <!-- Warm Temple Lighting -->
+    <a-light type="ambient" color="#FFB74D" intensity="0.4"></a-light>
+    <a-light type="point" position="0 2 -3" color="#FF9800" intensity="1.5" distance="8"></a-light>
+
+    <!-- Ambient Audio Player -->
+    <a-entity sound="src: #ambient-sound; autoplay: true; loop: true; volume: 0.5" position="0 1.6 -3"></a-entity>
+
+    <!-- 2. Player Rig: Camera + Meta Quest Motion Controller Lasers -->
+    <a-entity id="rig" position="0 0 0">
+      <a-camera position="0 1.6 0">
+        <!-- Desktop/Gaze Cursor -->
+        <a-cursor 
+          id="gaze-cursor"
+          color="#FFD700" 
+          fuse="true" 
+          fuse-timeout="1200"
+          raycaster="objects: .clickable">
+        </a-cursor>
+      </a-camera>
+
+      <!-- Quest Right Controller -->
+      <a-entity 
+        laser-controls="hand: right" 
+        raycaster="objects: .clickable; far: 10"
+        line="color: #FFD700; opacity: 0.8">
+      </a-entity>
+      
+      <!-- Quest Left Controller -->
+      <a-entity 
+        laser-controls="hand: left" 
+        raycaster="objects: .clickable; far: 10"
+        line="color: #FFD700; opacity: 0.8">
+      </a-entity>
+    </a-entity>
+
+    <!-- 3. Central Sacred Lamp (Kuthuvillakku) -->
+    <a-entity position="0 0 -3">
+      <a-cylinder position="0 0.1 0" radius="0.3" height="0.1" color="#DAA520" material="metalness: 0.8; roughness: 0.2"></a-cylinder>
+      <a-cylinder position="0 0.6 0" radius="0.06" height="1.0" color="#FFD700" material="metalness: 0.8; roughness: 0.2"></a-cylinder>
+      <a-cone position="0 1.15 0" radius-bottom="0.25" radius-top="0.05" height="0.1" color="#DAA520" material="metalness: 0.8; roughness: 0.2"></a-cone>
+      <!-- Pulsing Flame -->
+      <a-sphere 
+        position="0 1.3 0" 
+        radius="0.08" 
+        color="#FF5722" 
+        material="emissive: #FF9800; emissiveIntensity: 1"
+        animation="property: scale; to: 1.2 1.4 1.2; dir: alternate; loop: true; dur: 600">
+      </a-sphere>
+    </a-entity>
+
+    <!-- 4. Pradakshina Circle: 9 SDG Golu Stations -->
+    <!-- Station 1: SDG 1 -->
+    <a-entity position="0 0 -5.5" info-popup="title: SDG 1: No Poverty; desc: Empowering local doll artisans & rural craft communities.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#E53935" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 2: SDG 2 -->
+    <a-entity position="1.8 0 -4.8" rotation="0 -35 0" info-popup="title: SDG 2: Zero Hunger; desc: Sundal offerings emphasizing sustainable grains & organic nourishment.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#D84315" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 3: SDG 3 -->
+    <a-entity position="3.2 0 -3.2" rotation="0 -70 0" info-popup="title: SDG 3: Good Health; desc: Promoting holistic wellness through devotional music and quiet reflection.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#43A047" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 4: SDG 4 -->
+    <a-entity position="3.2 0 -1.4" rotation="0 -110 0" info-popup="title: SDG 4: Quality Education; desc: Saraswati Puja honoring wisdom, literature, and accessible learning.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#C62828" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 5: SDG 5 -->
+    <a-entity position="1.8 0 0.2" rotation="0 -145 0" info-popup="title: SDG 5: Gender Equality; desc: Celebrating the divine feminine, empowerment, and leadership.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#FFB300" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 6: SDG 6 -->
+    <a-entity position="-1.8 0 0.2" rotation="0 145 0" info-popup="title: SDG 6: Clean Water; desc: Sacred Teertham honoring river conservation and clean water access.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#00ACC1" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 7: SDG 7 -->
+    <a-entity position="-3.2 0 -1.4" rotation="0 110 0" info-popup="title: SDG 7: Clean Energy; desc: Oil lamps symbolizing solar power and clean, renewable energy.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#FDD835" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 8: SDG 12 -->
+    <a-entity position="-3.2 0 -3.2" rotation="0 70 0" info-popup="title: SDG 12: Responsible Consumption; desc: Eco-friendly clay dolls and zero-plastic festival celebrations.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#FB8C00" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+    <!-- Station 9: SDG 15 -->
+    <a-entity position="-1.8 0 -4.8" rotation="0 35 0" info-popup="title: SDG 15: Life on Land; desc: Sacred flora, groves, and protecting biodiversity across ecosystems.">
+      <a-box class="clickable" position="0 0.4 0" width="0.8" height="0.8" depth="0.8" color="#3e2723"></a-box>
+      <a-sphere position="0 1.0 0" radius="0.2" color="#7CB342" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-sphere>
+    </a-entity>
+
+  </a-scene>
+</body>
+</html>

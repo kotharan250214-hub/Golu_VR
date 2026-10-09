@@ -1,0 +1,36 @@
+/* General Overlay Styling */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#ui-overlay {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 999;
+  background: rgba(15, 8, 25, 0.85);
+  color: #FFD700;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid #FFD700;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  max-width: 350px;
+  pointer-events: none;
+}
+
+#ui-overlay h1 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFF8E1;
+}
+
+#ui-overlay p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: #FFECB3;
+}
